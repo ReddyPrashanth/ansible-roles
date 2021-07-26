@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Update packages (Ubunut)
+    tags: always
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: jenkins
+  become: true
+  roles:
+  - role: jenkins
+
+- hosts: nginx
+  become: true
+  roles:
+  - role: nginx

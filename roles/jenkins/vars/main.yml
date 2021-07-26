@@ -1,0 +1,15 @@
+---
+# vars file for jenkins
+java: "default-jdk"
+repos:
+ jenkins:
+    name: "Jenkins"
+    url: "deb https://pkg.jenkins.io/debian-stable binary/"
+
+softwares:
+  java:
+    name: "{{ java }}"
+  jenkins:
+    name: "jenkins"
+
+jenkins_key_rpm: "https://pkg.jenkins.io/debian-stable/jenkins.io.key"

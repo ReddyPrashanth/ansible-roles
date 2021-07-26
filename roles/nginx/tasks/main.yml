@@ -1,0 +1,9 @@
+---
+
+- name: Install nginx (Ubuntu)
+  tags: nginx,ubuntu
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
