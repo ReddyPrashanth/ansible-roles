@@ -7,3 +7,55 @@
     state: latest
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
+
+- name: Install certbot to configure SSL
+  tags: nginx,ssl,ubuntu
+  apt:
+    name:
+      - certbot 
+      - python3-certbot-nginx
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+    
+- name: Create letsencrypt conf
+  tags: nginx,ssl,ubuntu
+  copy: 
+    src: letsencrypt.conf
+    dest: /etc/nginx/snippets/letsencrypt.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Check directory
+  stat:
+    path: /var/www/letsencrypt
+  register: folder
+
+- name: Create directory if not exist
+  tags: nginx,ssl,ubuntu 
+  file:
+    path: /var/www/letsencrypt
+    state: directory
+    mode: '0755'
+    group: root
+    owner: root
+  when: folder.stat.exists == false
+
+- name: Copy nginx config for Jenkins
+  tags: nginx,ubuntu
+  copy:
+    src: awspsreepathi.xyz
+    dest: /etc/nginx/sites-enabled/awspsreepathi.xyz
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart nginx
+
+- name: Fetch SSl certificate
+  tags: nginx,ssl,ubuntu
+  shell:
+    cmd: certbot --nginx -d awspsreepathi.xyz
+  notify:
+    - Restart nginx  

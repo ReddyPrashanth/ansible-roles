@@ -1,0 +1,10 @@
+server {
+    listen 80;
+
+    include /etc/nginx/snippets/letsencrypt.conf;
+
+    server_name awspsreepathi.xyz;
+
+    root /var/www/awspsreepathi.xyz;
+    index index.html;
+}
